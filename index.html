@@ -24,9 +24,9 @@
         <button id="modeInvoiceBtn">Invoice</button>
       </div>
       <button class="topbtn" id="convertBtn">Convert → Invoice</button>
-      <button class="topbtn">+ New</button>
-      <button class="topbtn">Save</button>
-      <button class="topbtn primary">Print / PDF</button>
+      <button class="topbtn" id="newDocBtn">+ New</button>
+      <button class="topbtn" id="saveDocBtn">Save</button>
+      <button class="topbtn primary" id="printDocBtn">Print / PDF</button>
     </div>
 
     <!-- Left panel for user inputs -->
@@ -58,7 +58,7 @@
             <input type="text" id="coGSTIN" placeholder="22AAAAA0000A1Z5">
           </div>
         </div>
-        <button class="miniBtn">Save as default</button>
+        <button class="miniBtn" id="saveCompanyBtn">Save as default</button>
       </div>
 
       <!-- Section: Client details -->
@@ -73,7 +73,7 @@
 
         <label for="clMeta">Address / contact</label>
         <textarea id="clMeta" placeholder="Address&#10;Phone · Email&#10;GSTIN (if any)"></textarea>
-        <button class="miniBtn">Save this client</button>
+        <button class="miniBtn" id="saveClientBtn">Save this client</button>
       </div>
 
       <!-- Section: Document details -->
@@ -115,7 +115,7 @@
       <div class="section">
         <h3>Line items</h3>
         <div id="itemsEditor"></div>
-        <button class="miniBtn">+ Add item</button>
+        <button class="miniBtn" id="addItemBtn">+ Add item</button>
       </div>
 
       <!-- Section: Discount & Tax -->

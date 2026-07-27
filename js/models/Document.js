@@ -38,7 +38,7 @@ export class Document {
     this.discountPct = parseFloat(data.discountPct) || 0;
     
     // Tax Info
-    this.gstPct = parseFloat(data.gstPct) !== undefined ? parseFloat(data.gstPct) : 18;
+    this.gstPct = data.gstPct !== undefined ? parseFloat(data.gstPct) : 18;
     this.gstType = data.gstType || 'split'; // 'split' (CGST/SGST) or 'igst'
     
     // Line Items

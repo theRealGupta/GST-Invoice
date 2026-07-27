@@ -23,10 +23,10 @@ class AppController {
       modeQuoteBtn: document.getElementById('modeQuoteBtn'),
       modeInvoiceBtn: document.getElementById('modeInvoiceBtn'),
       convertBtn: document.getElementById('convertBtn'),
-      newBtn: document.querySelector("button[onclick='newDoc()']") || null,
-      saveBtn: document.querySelector("button[onclick='saveDoc()']") || null,
-      printBtn: document.querySelector("button[onclick='window.print()']") || null,
-
+      newBtn: document.getElementById('newDocBtn'),
+      saveBtn: document.getElementById('saveDocBtn'),
+      printBtn: document.getElementById('printDocBtn'),
+      
       // Business details
       logoFile: document.getElementById('logoFile'),
       logoPreviewBox: document.getElementById('logoPreviewBox'),
@@ -35,14 +35,14 @@ class AppController {
       coMeta: document.getElementById('coMeta'),
       coMobile: document.getElementById('coMobile'),
       coGSTIN: document.getElementById('coGSTIN'),
-      saveCompanyBtn: document.querySelector("button[onclick='saveCompany()']") || null,
-
+      saveCompanyBtn: document.getElementById('saveCompanyBtn'),
+      
       // Client details
       clientSelect: document.getElementById('clientSelect'),
       clName: document.getElementById('clName'),
       clMeta: document.getElementById('clMeta'),
-      saveClientBtn: document.querySelector("button[onclick='saveClient()']") || null,
-
+      saveClientBtn: document.getElementById('saveClientBtn'),
+      
       // Document details
       dateLabel: document.getElementById('dateLabel'),
       dueLabel: document.getElementById('dueLabel'),
@@ -52,10 +52,10 @@ class AppController {
       statusWrap: document.getElementById('statusWrap'),
       docStatus: document.getElementById('docStatus'),
       amountReceived: document.getElementById('amountReceived'),
-
+      
       // Item Editor
       itemsEditor: document.getElementById('itemsEditor'),
-      addItemBtn: document.querySelector("button[onclick='addItem()']") || null,
+      addItemBtn: document.getElementById('addItemBtn'),
 
       // Taxes & Settings
       discountPct: document.getElementById('discountPct'),
@@ -108,21 +108,10 @@ class AppController {
     if (this.dom.convertBtn) this.dom.convertBtn.addEventListener('click', () => this.convertToInvoice());
     
     // Toolbar buttons
-    const buttons = document.querySelectorAll('.topbar button');
-    buttons.forEach(btn => {
-      const txt = btn.textContent.trim();
-      if (txt === '+ New') {
-        btn.onclick = null; // Remove inline handler placeholder
-        btn.addEventListener('click', () => this.newDoc());
-      } else if (txt === 'Save') {
-        btn.onclick = null;
-        btn.addEventListener('click', () => this.saveDoc());
-      } else if (txt === 'Print / PDF') {
-        btn.onclick = null;
-        btn.addEventListener('click', () => window.print());
-      }
-    });
-
+    if (this.dom.newBtn) this.dom.newBtn.addEventListener('click', () => this.newDoc());
+    if (this.dom.saveBtn) this.dom.saveBtn.addEventListener('click', () => this.saveDoc());
+    if (this.dom.printBtn) this.dom.printBtn.addEventListener('click', () => window.print());
+ 
     // Business info listeners
     this.dom.coName.addEventListener('input', () => {
       this.currentDoc.coName = this.dom.coName.value;
@@ -135,12 +124,10 @@ class AppController {
     this.dom.coMobile.addEventListener('input', () => this.render());
     this.dom.coGSTIN.addEventListener('input', () => this.render());
     
-    const saveCompanyBtn = document.querySelector('.section button[onclick="saveCompany()"]');
-    if (saveCompanyBtn) {
-      saveCompanyBtn.onclick = null;
-      saveCompanyBtn.addEventListener('click', () => this.saveCompanyProfile());
+    if (this.dom.saveCompanyBtn) {
+      this.dom.saveCompanyBtn.addEventListener('click', () => this.saveCompanyProfile());
     }
-
+ 
     // Client info listeners
     this.dom.clientSelect.addEventListener('change', (e) => this.selectClient(e.target.value));
     this.dom.clName.addEventListener('input', () => {
@@ -151,13 +138,11 @@ class AppController {
       this.currentDoc.clMeta = this.dom.clMeta.value;
       this.render();
     });
-
-    const saveClientBtn = document.querySelector('.section button[onclick="saveClient()"]');
-    if (saveClientBtn) {
-      saveClientBtn.onclick = null;
-      saveClientBtn.addEventListener('click', () => this.saveClient());
+ 
+    if (this.dom.saveClientBtn) {
+      this.dom.saveClientBtn.addEventListener('click', () => this.saveClient());
     }
-
+ 
     // Document details
     this.dom.docDate.addEventListener('input', () => {
       this.currentDoc.docDate = this.dom.docDate.value;
@@ -181,12 +166,10 @@ class AppController {
       this.currentDoc.amountReceived = parseFloat(this.dom.amountReceived.value) || 0;
       this.render();
     });
-
+ 
     // Add item listener
-    const addItemBtn = document.querySelector('.section button[onclick="addItem()"]');
-    if (addItemBtn) {
-      addItemBtn.onclick = null;
-      addItemBtn.addEventListener('click', () => this.addItem('', 1, 0, ''));
+    if (this.dom.addItemBtn) {
+      this.dom.addItemBtn.addEventListener('click', () => this.addItem('', 1, 0, ''));
     }
 
     // Item editor event delegation (more memory efficient & SOLID)
