@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GST Invoice — Quotation &amp; Invoice Maker</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div class="app">
+    <!-- Top toolbar controls -->
+    <div class="topbar">
+      <div class="brandmark">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M4 3h16v18l-4-2-4 2-4-2-4 2V3z" stroke="#F7F3E9" stroke-width="1.6" stroke-linejoin="round"/>
+          <path d="M7 8h10M7 12h10M7 16h6" stroke="#8B2635" stroke-width="1.6" stroke-linecap="round"/>
+        </svg>
+        GST Invoice
+      </div>
+      <div class="modeToggle">
+        <button id="modeQuoteBtn" class="active">Quotation</button>
+        <button id="modeInvoiceBtn">Invoice</button>
+      </div>
+      <button class="topbtn" id="convertBtn">Convert → Invoice</button>
+      <button class="topbtn">+ New</button>
+      <button class="topbtn">Save</button>
+      <button class="topbtn primary">Print / PDF</button>
+    </div>
+
+    <!-- Left panel for user inputs -->
+    <div class="panel">
+      <!-- Section: Your Business details -->
+      <div class="section">
+        <h3>Your business</h3>
+        <label for="logoFile">Logo</label>
+        <div class="logoRow">
+          <div class="logoPreviewBox" id="logoPreviewBox">No logo</div>
+          <div>
+            <input type="file" id="logoFile" accept="image/*">
+            <button class="miniBtn" id="logoRemoveBtn" style="display:none;">Remove logo</button>
+          </div>
+        </div>
+        <label for="coName">Business name</label>
+        <input type="text" id="coName" placeholder="Your company name">
+        
+        <label for="coMeta">Address (one line each)</label>
+        <textarea id="coMeta" placeholder="Address line 1&#10;Address line 2"></textarea>
+        
+        <div class="row2">
+          <div>
+            <label for="coMobile">Mobile number</label>
+            <input type="text" id="coMobile" placeholder="+91 90000 00000">
+          </div>
+          <div>
+            <label for="coGSTIN">GST no.</label>
+            <input type="text" id="coGSTIN" placeholder="22AAAAA0000A1Z5">
+          </div>
+        </div>
+        <button class="miniBtn">Save as default</button>
+      </div>
+
+      <!-- Section: Client details -->
+      <div class="section">
+        <h3>Bill to</h3>
+        <label for="clientSelect">Saved clients</label>
+        <select id="clientSelect">
+          <option value="">— Select a saved client —</option>
+        </select>
+        <label for="clName">Client name</label>
+        <input type="text" id="clName" placeholder="Client / company name">
+        
+        <label for="clMeta">Address / contact</label>
+        <textarea id="clMeta" placeholder="Address&#10;Phone · Email&#10;GSTIN (if any)"></textarea>
+        <button class="miniBtn">Save this client</button>
+      </div>
+
+      <!-- Section: Document details -->
+      <div class="section">
+        <h3>Document details</h3>
+        <div class="row2">
+          <div>
+            <label id="dateLabel" for="docDate">Date</label>
+            <input type="date" id="docDate">
+          </div>
+          <div>
+            <label id="dueLabel" for="dueDate">Valid until</label>
+            <input type="date" id="dueDate">
+          </div>
+        </div>
+        <label for="docNumber">Document number</label>
+        <input type="text" id="docNumber">
+        
+        <!-- Status Wrap (Invoice only) -->
+        <div id="statusWrap" style="display:none;">
+          <div class="row2">
+            <div>
+              <label for="docStatus">Status</label>
+              <select id="docStatus">
+                <option value="Unpaid">Unpaid</option>
+                <option value="Partially Paid">Partially Paid</option>
+                <option value="Paid">Paid</option>
+              </select>
+            </div>
+            <div>
+              <label for="amountReceived">Amount received</label>
+              <input type="number" id="amountReceived" value="0" min="0">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section: Line items -->
+      <div class="section">
+        <h3>Line items</h3>
+        <div id="itemsEditor"></div>
+        <button class="miniBtn">+ Add item</button>
+      </div>
+
+      <!-- Section: Discount & Tax -->
+      <div class="section">
+        <h3>Discount &amp; tax</h3>
+        <div class="row2">
+          <div>
+            <label for="discountPct">Discount (%)</label>
+            <input type="number" id="discountPct" value="0" min="0">
+          </div>
+          <div>
+            <label for="gstPct">GST rate (%)</label>
+            <input type="number" id="gstPct" value="18" min="0">
+          </div>
+        </div>
+        <div class="gstToggle">
+          <label>
+            <input type="radio" name="gstType" value="split" checked>
+            CGST + SGST (same state)
+          </label>
+        </div>
+        <div class="gstToggle">
+          <label>
+            <input type="radio" name="gstType" value="igst">
+            IGST (different state)
+          </label>
+        </div>
+      </div>
+
+      <!-- Section: Bank details (Invoice only) -->
+      <div class="section" id="bankSection" style="display:none;">
+        <h3>Payment details</h3>
+        <textarea id="bankInfo" placeholder="Bank name&#10;Account no.&#10;IFSC&#10;UPI ID"></textarea>
+      </div>
+
+      <!-- Section: Notes/Terms -->
+      <div class="section">
+        <h3>Notes / terms</h3>
+        <textarea id="notes" placeholder="Thank you note, payment terms, validity conditions..."></textarea>
+      </div>
+
+      <!-- Section: Promo Banner -->
+      <div class="section">
+        <h3>Promo banner (bottom of document)</h3>
+        <p class="hint">Fixed 2" strip at the bottom of every quotation &amp; invoice — good for offers, a QR code, or a footer ad. Stays the same across all your documents.</p>
+        <div class="logoRow">
+          <div class="logoPreviewBox wide" id="promoPreviewBox">No banner</div>
+          <div>
+            <input type="file" id="promoFile" accept="image/*">
+            <button class="miniBtn" id="promoRemoveBtn" style="display:none;">Remove banner</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section: Saved Documents list -->
+      <div class="section">
+        <h3>Saved documents</h3>
+        <div class="savedList" id="savedList"></div>
+      </div>
+    </div>
+
+    <!-- Right panel for sheet preview -->
+    <div class="previewWrap">
+      <div class="sheet" id="sheet"></div>
+    </div>
+
+    <!-- Application Footer -->
+    <div class="appFooter">
+      <span>Free &amp; open source</span>
+      <span class="dot">·</span>
+      <a href="https://github.com/anupgupta/quotation-invoice-maker" target="_blank" rel="noopener">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+          <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+        </svg>
+        GitHub
+      </a>
+      <span class="dot">·</span>
+      <span>Built by Anup Gupta</span>
+      <span class="dot">·</span>
+      <span>No data ever leaves your browser</span>
+      <span class="dot">·</span>
+      <span>Free to use, no signup</span>
+    </div>
+  </div>
+
+  <!-- Application script orchestrator loaded as ES Module -->
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
