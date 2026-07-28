@@ -283,6 +283,11 @@ class AppController {
     // Reset manual override flags
     this.dom.docNumber.dataset.manual = '';
     
+    // Preserve company profile configurations in the new document state
+    this.currentDoc.coName = this.dom.coName.value;
+    this.currentDoc.coMeta = this.dom.coMeta.value;
+    this.currentDoc.bankInfo = this.dom.bankInfo.value;
+    
     // Set default item
     this.addItem('', 1, 0, '');
     this.prefillDocumentNumber();
@@ -338,15 +343,26 @@ class AppController {
    * Persists the current document to storage.
    */
   async saveDoc() {
+    // Harvest all form input values to keep the document model 100% in sync
+    this.currentDoc.coName = this.dom.coName.value;
+    this.currentDoc.coMeta = this.dom.coMeta.value;
+    this.currentDoc.clName = this.dom.clName.value;
+    this.currentDoc.clMeta = this.dom.clMeta.value;
+    this.currentDoc.docDate = this.dom.docDate.value;
+    this.currentDoc.dueDate = this.dom.dueDate.value;
+    this.currentDoc.docNumber = this.dom.docNumber.value;
+    this.currentDoc.notes = this.dom.notes.value;
+    this.currentDoc.bankInfo = this.dom.bankInfo.value;
+    this.currentDoc.status = this.dom.docStatus.value;
+    this.currentDoc.amountReceived = parseFloat(this.dom.amountReceived.value) || 0;
+    this.currentDoc.discountPct = parseFloat(this.dom.discountPct.value) || 0;
+    this.currentDoc.gstPct = parseFloat(this.dom.gstPct.value) || 0;
+    
     const totals = this.currentDoc.calculateTotals();
     const isNew = !this.currentDoc.id;
     if (isNew) {
       this.currentDoc.id = Formatters.uid();
     }
-    
-    // Hydrate updated company header details just in case
-    this.currentDoc.coName = this.dom.coName.value;
-    this.currentDoc.coMeta = this.dom.coMeta.value;
     
     const serializedDoc = this.currentDoc.toJSON();
     
