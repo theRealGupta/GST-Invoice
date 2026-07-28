@@ -4,21 +4,68 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GST Invoice — Quotation &amp; Invoice Maker</title>
+  <title>GST Invoice — Free Quotation &amp; Invoice Maker</title>
+  <meta name="description" content="Free, open-source, and privacy-focused GST invoice and quotation maker. Generate professional PDF invoices and estimates directly in your browser with zero signup, no tracking, and complete offline capability.">
+  <meta name="keywords" content="gst invoice, quotation maker, invoice maker, free invoice generator, privacy-focused billing, offline invoicing, estimates generator, gst billing tool, indian gst calculator">
+  <meta name="author" content="Anup Gupta">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://therealgupta.github.io/GST-Invoice/">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://therealgupta.github.io/GST-Invoice/">
+  <meta property="og:title" content="GST Invoice — Free Quotation &amp; Invoice Maker">
+  <meta property="og:description" content="A beautiful, privacy-focused billing tool. Generate professional estimates and GST invoices offline in your browser. 100% free with no signup.">
+  <meta property="og:image" content="https://therealgupta.github.io/GST-Invoice/og-image.png">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://therealgupta.github.io/GST-Invoice/">
+  <meta name="twitter:title" content="GST Invoice — Free Quotation &amp; Invoice Maker">
+  <meta name="twitter:description" content="A beautiful, privacy-focused billing tool. Generate professional estimates and GST invoices offline in your browser. 100% free with no signup.">
+  <meta name="twitter:image" content="https://therealgupta.github.io/GST-Invoice/og-image.png">
+
+  <!-- Structured Data (JSON-LD) -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "GST Invoice — Quotation & Invoice Maker",
+      "alternateName": "GST Invoice Maker",
+      "description": "A beautiful, lightweight, privacy-focused, and open-source billing tool. Generate professional estimates and tax invoices directly in your web browser with zero signup, no tracking, and complete offline capability.",
+      "url": "https://therealgupta.github.io/GST-Invoice/",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "All",
+      "browserRequirements": "Requires JavaScript. Requires HTML5.",
+      "softwareVersion": "1.0.0",
+      "screenshot": "https://therealgupta.github.io/GST-Invoice/og-image.png",
+      "license": "https://opensource.org/licenses/MIT",
+      "author": {
+        "@type": "Person",
+        "name": "Anup Gupta"
+      },
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "INR"
+      }
+    }
+  </script>
+
   <link rel="stylesheet" href="css/styles.css">
 </head>
 
 <body>
   <div class="app">
     <!-- Top toolbar controls -->
-    <div class="topbar">
-      <div class="brandmark">
+    <header class="topbar">
+      <h1 class="brandmark">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
           <path d="M4 3h16v18l-4-2-4 2-4-2-4 2V3z" stroke="#F7F3E9" stroke-width="1.6" stroke-linejoin="round" />
           <path d="M7 8h10M7 12h10M7 16h6" stroke="#8B2635" stroke-width="1.6" stroke-linecap="round" />
         </svg>
         GST Invoice
-      </div>
+      </h1>
       <div class="modeToggle">
         <button id="modeQuoteBtn" class="active">Quotation</button>
         <button id="modeInvoiceBtn">Invoice</button>
@@ -27,13 +74,13 @@
       <button class="topbtn" id="newDocBtn">+ New</button>
       <button class="topbtn" id="saveDocBtn">Save</button>
       <button class="topbtn primary" id="printDocBtn">Print / PDF</button>
-    </div>
+    </header>
 
     <!-- Left panel for user inputs -->
-    <div class="panel">
+    <aside class="panel" aria-label="Billing Settings">
       <!-- Section: Your Business details -->
       <div class="section">
-        <h3>Your business</h3>
+        <h2>Your business</h2>
         <label for="logoFile">Logo</label>
         <div class="logoRow">
           <div class="logoPreviewBox" id="logoPreviewBox">No logo</div>
@@ -63,7 +110,7 @@
 
       <!-- Section: Client details -->
       <div class="section">
-        <h3>Bill to</h3>
+        <h2>Bill to</h2>
         <label for="clientSelect">Saved clients</label>
         <select id="clientSelect">
           <option value="">— Select a saved client —</option>
@@ -78,7 +125,7 @@
 
       <!-- Section: Document details -->
       <div class="section">
-        <h3>Document details</h3>
+        <h2>Document details</h2>
         <div class="row2">
           <div>
             <label id="dateLabel" for="docDate">Date</label>
@@ -113,14 +160,14 @@
 
       <!-- Section: Line items -->
       <div class="section">
-        <h3>Line items</h3>
+        <h2>Line items</h2>
         <div id="itemsEditor"></div>
         <button class="miniBtn" id="addItemBtn">+ Add item</button>
       </div>
 
       <!-- Section: Discount & Tax -->
       <div class="section">
-        <h3>Discount &amp; tax</h3>
+        <h2>Discount &amp; tax</h2>
         <div class="row2">
           <div>
             <label for="discountPct">Discount (%)</label>
@@ -147,19 +194,19 @@
 
       <!-- Section: Bank details (Invoice only) -->
       <div class="section" id="bankSection" style="display:none;">
-        <h3>Payment details</h3>
+        <h2>Payment details</h2>
         <textarea id="bankInfo" placeholder="Bank name&#10;Account no.&#10;IFSC&#10;UPI ID"></textarea>
       </div>
 
       <!-- Section: Notes/Terms -->
       <div class="section">
-        <h3>Notes / terms</h3>
+        <h2>Notes / terms</h2>
         <textarea id="notes" placeholder="Thank you note, payment terms, validity conditions..."></textarea>
       </div>
 
       <!-- Section: Promo Banner -->
       <div class="section">
-        <h3>Promo banner (bottom of document)</h3>
+        <h2>Promo banner (bottom of document)</h2>
         <p class="hint">Fixed 2" strip at the bottom of every quotation &amp; invoice — good for offers, a QR code, or a
           footer ad. Stays the same across all your documents.</p>
         <div class="logoRow">
@@ -173,18 +220,18 @@
 
       <!-- Section: Saved Documents list -->
       <div class="section">
-        <h3>Saved documents</h3>
+        <h2>Saved documents</h2>
         <div class="savedList" id="savedList"></div>
       </div>
-    </div>
+    </aside>
 
     <!-- Right panel for sheet preview -->
-    <div class="previewWrap">
+    <main class="previewWrap">
       <div class="sheet" id="sheet"></div>
-    </div>
+    </main>
 
     <!-- Application Footer -->
-    <div class="appFooter">
+    <footer class="appFooter">
       <span>Free &amp; open source</span>
       <span class="dot">·</span>
       <a href="https://github.com/theRealGupta/GST-Invoice" target="_blank" rel="noopener">
@@ -200,7 +247,7 @@
       <span>No data ever leaves your browser</span>
       <span class="dot">·</span>
       <span>Free to use, no signup</span>
-    </div>
+    </footer>
   </div>
 
   <!-- Application script orchestrator loaded as ES Module -->
