@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+  <!-- Document silhouette -->
+  <path d="M4 3h16v18l-4-2-4 2-4-2-4 2V3z" stroke="#8B2635" stroke-width="2" stroke-linejoin="round" fill="#F7F3E9"/>
+  <!-- Ruled sheet lines -->
+  <path d="M8 8h8M8 12h8M8 16h5" stroke="#8B2635" stroke-width="2" stroke-linecap="round"/>
+</svg>
