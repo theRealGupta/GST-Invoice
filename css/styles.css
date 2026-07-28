@@ -632,11 +632,13 @@ table.items td:first-child {
   }
   .sheet {
     box-shadow: none !important;
-    background-image: none !important; /* Clean print canvas saving ink */
     margin: 0 !important;
     padding: 16mm 20mm !important; /* Print margin safety padding */
     width: 100% !important;
     max-width: 100% !important;
+    min-height: 100vh !important;  /* Forces sheet to occupy full page height so ruled lines repeat to the bottom */
+    -webkit-print-color-adjust: exact !important; /* Force print of background gradients */
+    print-color-adjust: exact !important;         /* Force print of background gradients */
   }
   @page {
     margin: 0; /* Hides browser URL, date, title, and page numbering headers/footers */
