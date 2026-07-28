@@ -687,7 +687,9 @@ class AppController {
     const file = e.target.files[0];
     if (!file) return;
     try {
-      this.logoData = await this.readFileAsDataURL(file);
+      const originalData = await this.readFileAsDataURL(file);
+      // Compress logo to a maximum of 256x256 pixels for storage & performance optimization
+      this.logoData = await Formatters.compressImage(originalData, 256, 256, 0.85);
       this.updateLogoPreview();
       await this.saveCompanyProfile();
       this.render();
@@ -717,7 +719,9 @@ class AppController {
     const file = e.target.files[0];
     if (!file) return;
     try {
-      this.promoData = await this.readFileAsDataURL(file);
+      const originalData = await this.readFileAsDataURL(file);
+      // Compress promo banner to a maximum of 800x400 pixels to optimize loading & print times
+      this.promoData = await Formatters.compressImage(originalData, 800, 400, 0.80);
       this.updatePromoPreview();
       await storageService.set('promo-banner', this.promoData);
       this.render();

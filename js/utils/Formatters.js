@@ -129,3 +129,53 @@ export function numberToWords(amount) {
 
   return 'Rupees ' + parts.join(' ') + ' Only';
 }
+
+/**
+ * Resizes and compresses an image (Data URL) on the client side using a canvas.
+ * Resolves to a smaller base64 JPEG data URL.
+ * @param {string} dataUrl - The input base64 data URL
+ * @param {number} maxWidth - Maximum target width
+ * @param {number} maxHeight - Maximum target height
+ * @param {number} [quality=0.8] - JPEG quality (0 to 1)
+ * @returns {Promise<string>} Resized and compressed image base64 data URL
+ */
+export function compressImage(dataUrl, maxWidth, maxHeight, quality = 0.8) {
+  return new Promise((resolve) => {
+    // If it's not a data URL (e.g. empty or invalid), return immediately
+    if (!dataUrl || !dataUrl.startsWith('data:image')) {
+      resolve(dataUrl);
+      return;
+    }
+    
+    const img = new Image();
+    img.onload = () => {
+      let width = img.width;
+      let height = img.height;
+      
+      // Calculate new dimensions while preserving aspect ratio
+      if (width > maxWidth) {
+        height = Math.round((height * maxWidth) / width);
+        width = maxWidth;
+      }
+      if (height > maxHeight) {
+        width = Math.round((width * maxHeight) / height);
+        height = maxHeight;
+      }
+      
+      const canvas = document.createElement('canvas');
+      canvas.width = width;
+      canvas.height = height;
+      
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, width, height);
+      
+      // Export as compressed JPEG
+      const compressedDataUrl = canvas.toDataURL('image/jpeg', quality);
+      resolve(compressedDataUrl);
+    };
+    img.onerror = () => {
+      resolve(dataUrl); // Fallback to original if loading fails
+    };
+    img.src = dataUrl;
+  });
+}
